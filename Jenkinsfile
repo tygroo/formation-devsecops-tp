@@ -1,4 +1,4 @@
-pipeline {
+v.pipeline {
   agent any
 
   environment {
@@ -18,7 +18,7 @@ pipeline {
           steps {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
-                  NVD_API_KEY=$secret_npi
+                  env.NVD_API_KEY=$secret_npi
                   sh "sudo mvn dependency-check:check"
                 }
             }
