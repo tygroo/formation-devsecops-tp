@@ -5,7 +5,7 @@ pipeline {
     deploymentName = "devsecops"
     containerName = "devsecops-container"
     serviceName = "devsecops-svc"
-    imageName = "hrefnhaila/devops-app:${GIT_COMMIT}"
+    imageName = "tygroo972/devops-appbbo:${GIT_COMMIT}"
     applicationURL="newdevsecops1.eastus.cloudapp.azure.com"
     applicationURI="increment/99"
   }
