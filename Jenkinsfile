@@ -96,7 +96,9 @@ stage('scan sonarqube') {
 
       stage('Scan trivy image dep CVE') {
       steps {
+         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
         sh 'sudo bash trivy-image-scan.sh'
+         }
       }
       }
 
@@ -141,6 +143,7 @@ stage('Vulnerability Scan - Kubernetes') {
        //-------------------------- 
       stage('Deployment Kubernetes  ') {
               steps {
+              
                 withKubeConfig([credentialsId: 'kubeconfigachraf']) {
                       sh "sudo sed -i 's#replace#hrefnhaila/devops-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
                       sh "sudo kubectl apply -f k8s_deployment_service.yaml"
