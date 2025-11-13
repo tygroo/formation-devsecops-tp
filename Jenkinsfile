@@ -8,6 +8,9 @@ pipeline {
     imageName = "tygroo972/devops-appbbo:${GIT_COMMIT}"
     applicationURL="newdevsecops1.eastus.cloudapp.azure.com"
     applicationURI="increment/99"
+    withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
+    NVD_API_KEY=$secret_npi
+      }
   }
 
   stages {
