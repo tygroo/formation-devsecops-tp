@@ -8,9 +8,8 @@ pipeline {
     imageName = "tygroo972/devops-appbbo:${GIT_COMMIT}"
     applicationURL="newdevsecops1.eastus.cloudapp.azure.com"
     applicationURI="increment/99"
-    withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
-    NVD_API_KEY=$secret_npi
-      }
+    NVD_API_KEY=""
+  
   }
 
   stages {
@@ -18,7 +17,10 @@ pipeline {
     stage('Vulnerability Scan - Docker') {
           steps {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-              sh "sudo mvn dependency-check:check"
+                withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
+                  NVD_API_KEY=$secret_npi
+                  sh "sudo mvn dependency-check:check"
+                }
             }
           }
           post {
