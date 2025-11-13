@@ -118,9 +118,10 @@ stage('scan sonarqube') {
     //--------------------------
 stage('Vulnerability Scan - Kubernetes') {
   steps {
-                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                   
 
     parallel(
+       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
       "OPA Scan": {
         sh 'sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
       },
@@ -130,8 +131,9 @@ stage('Vulnerability Scan - Kubernetes') {
       "Trivy Scan": {
         sh "sudo bash trivy-k8s-scan.sh"
       }
+       }
     )
-                    }
+                    
                     }
 }
        //-------------------------- 
