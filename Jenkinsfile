@@ -33,7 +33,6 @@ pipeline {
         archive 'target/*.jar' //so that they can be downloaded later test aa
       }
       }
-
     
     //--------------------------
     stage('UNIT test & jacoco ') {
@@ -62,7 +61,24 @@ pipeline {
        }
     }
 //--------------------------
+stage('scan sonarqube') {
+              steps {
+ 
+            withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'sonarqubetoken')]) {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+ 
+  sh "sudo mvn clean verify sonar:sonar \
+  -Dsonar.projectKey=devops \
+  -Dsonar.projectName='devops' \
+  -Dsonar.host.url=http://devsecops10.eastus.cloudapp.azure.com:9000 \
+  -Dsonar.token=sqp_c883f98c5eb05f17dfa46546d39eb6245b052187"
+ 
+ 
+                }
+              }
+            }
 
+            }
     //--------------------------
 
 
