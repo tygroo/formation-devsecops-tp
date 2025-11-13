@@ -16,7 +16,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'secret_npi', variable: 'TMP_SECRET_NPI')]) {
           script {
-            env.SECRET_NPI = TMP_SECRET_NPI
+            env.NVD_API_KEY = TMP_SECRET_NPI
           }
         }
       }
