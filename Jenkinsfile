@@ -64,7 +64,7 @@ pipeline {
 stage('scan sonarqube') {
               steps {
  
-            withCredentials([string(credentialsId: 'sonarqubetoken', variable: 'sonarqubetoken')]) {
+          
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
  
   sh "sudo mvn clean verify sonar:sonar \
@@ -76,7 +76,7 @@ stage('scan sonarqube') {
  
                 }
               }
-            }
+          
 
             }
     //--------------------------
