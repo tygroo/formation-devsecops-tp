@@ -12,14 +12,23 @@ pipeline {
   }
 
   stages {
+      stage('Load API Key') {
+      steps {
+        withCredentials([string(credentialsId: 'secret_npi', variable: 'TMP_SECRET_NPI')]) {
+          script {
+            env.SECRET_NPI = TMP_SECRET_NPI
+          }
+        }
+      }
+    }
 
     stage('Vulnerability Scan - Docker') {
           steps {
-             withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
+             
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 
                   sh "sudo mvn dependency-check:check"
-                }
+              
             }
           }
           post {
