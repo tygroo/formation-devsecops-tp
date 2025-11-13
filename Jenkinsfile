@@ -15,8 +15,8 @@ pipeline {
 
     stage('Vulnerability Scan - Docker') {
           steps {
-            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
+             withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                   NVD_API_KEY=$secret_npi
                   sh "sudo mvn dependency-check:check"
                 }
