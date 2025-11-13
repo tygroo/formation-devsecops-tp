@@ -84,6 +84,11 @@ stage('scan sonarqube') {
             }
     //--------------------------
 
+      stage('Scan trivy image dep CVE') {
+      steps {
+        sh 'sudo bash trivy-image-scan.sh'
+      }
+      }
 
 
 
