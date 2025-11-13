@@ -8,7 +8,6 @@ pipeline {
     imageName = "tygroo972/devops-appbbo:${GIT_COMMIT}"
     applicationURL="newdevsecops1.eastus.cloudapp.azure.com"
     applicationURI="increment/99"
-    NVD_API_KEY=""
   
   }
 
@@ -18,7 +17,7 @@ pipeline {
           steps {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 withCredentials([string(credentialsId: 'secret_npi', variable: 'secret_npi')]) {
-                  env.NVD_API_KEY=$secret_npi
+                  NVD_API_KEY=$secret_npi
                   sh "sudo mvn dependency-check:check"
                 }
             }
