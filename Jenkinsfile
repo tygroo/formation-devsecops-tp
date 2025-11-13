@@ -121,9 +121,11 @@ stage('Vulnerability Scan - Kubernetes') {
                    
 
     parallel(
-       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+      
       "OPA Scan": {
+         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
         sh 'sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+         }
       },
       "Kubesec Scan": {
         sh "sudo bash kubesec-scan.sh"
@@ -131,7 +133,7 @@ stage('Vulnerability Scan - Kubernetes') {
       "Trivy Scan": {
         sh "sudo bash trivy-k8s-scan.sh"
       }
-       }
+    
     )
                     
                     }
