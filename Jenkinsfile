@@ -12,6 +12,20 @@ pipeline {
 
   stages {
 
+    stage('Vulnerability Scan - Docker') {
+          steps {
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh "sudo mvn dependency-check:check"
+            }
+          }
+          post {
+            always {
+              dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+              jacoco(execPattern: 'target/jacoco.exec')
+            }
+          }
+        }
+
 
       stage('Build Artifact') {
       steps {
@@ -54,10 +68,17 @@ pipeline {
 
 
 
-
     //--------------------------
 
-
+ stage('Docker Build and Push') {
+              steps {
+                withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD_ACHRAF', variable: 'DOCKER_HUB_PASSWORD')]) {
+                  sh 'sudo docker login -u hrefnhaila -p $DOCKER_HUB_PASSWORD'
+                  sh 'sudo docker build -t hrefnhaila/devops-app:""$GIT_COMMIT"" .'
+                  sh 'sudo docker push hrefnhaila/devops-app:""$GIT_COMMIT""'
+                }
+              }
+            }
 
     
     //--------------------------
