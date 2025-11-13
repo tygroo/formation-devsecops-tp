@@ -72,10 +72,10 @@ pipeline {
 
  stage('Docker Build and Push') {
               steps {
-                withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD_ACHRAF', variable: 'DOCKER_HUB_PASSWORD')]) {
-                  sh 'sudo docker login -u hrefnhaila -p $DOCKER_HUB_PASSWORD'
-                  sh 'sudo docker build -t hrefnhaila/devops-app:""$GIT_COMMIT"" .'
-                  sh 'sudo docker push hrefnhaila/devops-app:""$GIT_COMMIT""'
+                withCredentials([string(credentialsId: 'secret_dockerhub', variable: 'secret_dockerhub')]) {
+                  sh 'sudo docker login -u tygroo972 -p $secret_dockerhub'
+                  sh 'sudo docker build -t tygroo972/devops-appbbo:""$GIT_COMMIT"" .'
+                  sh 'sudo docker push tygroo972/devops-appbbo:""$GIT_COMMIT""'
                 }
               }
             }
